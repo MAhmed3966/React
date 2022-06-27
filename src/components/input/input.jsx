@@ -4,7 +4,8 @@ import List from "../list/list";
 export default function Input() {
   const [countries, setCountries] = useState([]);
   const [countriesDisplay, setCountriesDisplay] = useState([]);
-  const [selectedCountries, setSelectedCountries] = useState()
+  const [selectedCountries, setSelectedCountries] = useState("")
+  const [selected, setSelected] = useState(false)
   useEffect(() => {console.log('hello',countriesDisplay)}, [countriesDisplay]);
   const onBlur = (event) => {
     let name = event.target.value;
@@ -19,21 +20,28 @@ export default function Input() {
       .then((data) => {
         setCountries(data.map((country) => country.name.common));
       });
+      setSelected(true)
   };
   
   const onSelect= (event) =>{
-   if(event.target.value != 'false') 
+   if(event.target.value !== "false") 
    setSelectedCountries(event.target.value);
   }
 
   const onClick = () => {
-    console.log("selected country is", selectedCountries);
-    let country = [selectedCountries];
-    setCountriesDisplay(...countriesDisplay, country);
-    console.log("selected country 2", countriesDisplay);
+    setCountriesDisplay([...countriesDisplay, selectedCountries]);
     setSelectedCountries("");
+    setSelected(true);
+    if(countries.length >= 2){
+    setCountries(countries.filter((country) => {
+      return country != selectedCountries;
+    }))
+  }
+    else {
+      setCountries([])
+    }
   };
-  useEffect(()=>{onClick()}, selectedCountries)
+  useEffect(()=>{},[countries])
   return (
     <div className="input">
       <input
@@ -41,10 +49,7 @@ export default function Input() {
         onBlur={(event) => onBlur(event)}
         value={selectedCountries !== "" ? selectedCountries : null}
       ></input>
-      <button
-        className="btn"
-        onClick={onClick}
-      >
+      <button className="btn" onClick={onClick}>
         Add
       </button>
       {countriesDisplay.length != 0 && (
@@ -55,25 +60,26 @@ export default function Input() {
       )}
 
       <div>
-        <select
-          onChange={(event) => {
-            onSelect(event);
-          }}
-        >
-          <option key="selectCountries" value={false}>
-            {" "}
-            Select Countries
-          </option>
-          {countries &&
-            countries.map((country, index) => {
-              return (
-                <option value={country} key={index}>
-                  {country}
+        {countries && (
+          <select
+            onChange={(event) => {
+              onSelect(event);
+            }}
+          >
+            <option key="selectCountries" value="select countries" selected>
+                  Select Countries
                 </option>
-              );
-            })}
-          )
-        </select>
+            {countries.length > 0 &&
+              countries.map((country, index) => {
+                return (
+                  <option value={country} key={index}>
+                    {country}
+                  </option>
+                );
+              })}
+            )
+          </select>
+        )}
       </div>
     </div>
   );
