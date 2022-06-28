@@ -65,7 +65,7 @@ export default function Input() {
 
       <div>
         {countries && (
-          <select
+          <select value={selectedCountries}
             onChange={(event) => {
               onSelect(event);
             }}
