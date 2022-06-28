@@ -40,8 +40,12 @@ export default function Input() {
     else {
       setCountries([])
     }
+    setSelected(true);
   };
-  useEffect(()=>{},[countries])
+  useEffect(()=>{
+    console.log("countries rendered are", countries)
+  },[countries])
+  useEffect(()=> {},[selected])
   return (
     <div className="input">
       <input
@@ -66,10 +70,10 @@ export default function Input() {
               onSelect(event);
             }}
           >
-            <option key="selectCountries" value="select countries" selected>
+            <option key="selectCountries" value="select countries" >
                   Select Countries
                 </option>
-            {countries.length > 0 &&
+            {countries.length > 0 && 
               countries.map((country, index) => {
                 return (
                   <option value={country} key={index}>
