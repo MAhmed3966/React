@@ -1,10 +1,10 @@
 import './App.css';
-import Input from './components/input/input'
+import Number from './components/Number/Number'
 function App() {
   return (
     <div className="App">
       This Is React View: 
-      <Input />
+      <Number />
       
     </div>
   );
