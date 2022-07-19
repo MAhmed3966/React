@@ -1,13 +1,9 @@
-import './App.css';
-import Number from './components/Number/Number'
-function App() {
+import Games from "./Components/Games/Games";
+
+export default function App() {
   return (
-    <div className="App">
-      This Is React View: 
-      <Number />
-      
+    <div>
+      <Games />
     </div>
   );
 }
-
-export default App;
