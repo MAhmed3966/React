@@ -8,9 +8,11 @@ import { useContext } from "react";
 export default function FormDemo(props) {
   // Constants
   const { step } = props;
-  const { value1 } = useContext(AppContext);
+  const { value1, value3 } = useContext(AppContext);
   const [activeStep, setState] = value1;
-//  Functionality 
+  const [formData, setFormData] = value3;
+  let data = formData;
+  //  Functionality
   const GetForm = () => {
     switch (activeStep) {
       case 0:
@@ -38,7 +40,21 @@ export default function FormDemo(props) {
           </div>
         );
       default:
-        <div>Hello</div>;
+        return (
+          <div>
+            {/* {console.log(formData)} */}
+            {formData &&
+              formData.map((item, index) => (
+                <div key={index}>
+                  {Object.keys(item).map((key) => (
+                    <p key={key}>
+                      {key}:{item[key]}
+                    </p>
+                  ))}
+                </div>
+              ))}
+          </div>
+        );
     }
   };
   return (

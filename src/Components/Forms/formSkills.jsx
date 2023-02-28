@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { AppContext } from "../../context";
 
 export default function Skills() {
   const {
@@ -7,24 +9,34 @@ export default function Skills() {
     watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
-  console.log(watch("example")); // watch input value by passing the name of it
+  const { value1, value2, value3 } = useContext(AppContext);
+  const [activeStep, setState] = value1;
+  const [formValidated, setFormValidated] = value2;
+  const [formData, setFormData] = value3;
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-    <h1>Skills</h1>
+    <form
+      onSubmit={handleSubmit((data) => {
+        if (data) {
+          setState(activeStep + 1);
+          setFormData(formData.concat(data));
+        } else {
+          setState(activeStep);
+        }
+      })}
+    >
+      <h1>Skills</h1>
 
       {/* register your input into the hook by invoking the "register" function */}
-      <input  
-       className=""  placeholder="Please Enter Name " 
-      {...register('firstName',{required:true, maxLength:20})} 
-       />
+      <input
+        className=""
+        placeholder="Please Enter the technologies "
+        {...register("technology", { required: true })}
+      />
+      {errors.technology && <span>technology field can't be empty</span>}
 
       {/* include validation with required or other standard HTML validation rules */}
-      <input 
-      type="password"
-      {...register("exampleRequired", { required: true })} />
+
       {/* errors will return when field validation fails  */}
-      {errors.firstName && <span>Please write proper first name</span>}
       <input type="submit" />
     </form>
   );

@@ -1,4 +1,6 @@
 import { useForm } from "react-hook-form";
+import { AppContext } from "../../context";
+import { useContext } from "react";
 
 export default function Education() {
   const {
@@ -7,24 +9,35 @@ export default function Education() {
     watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
-  console.log(watch("example")); // watch input value by passing the name of it
+  const { value1, value2, value3 } = useContext(AppContext);
+  const [activeStep, setState] = value1;
+  const [formValidated, setFormValidated] = value2;
+  const [formData, setFormData] = value3;
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-    <h1>Education</h1>
-    
-      {/* register your input into the hook by invoking the "register" function */}
-      <input  
-       className=""  placeholder="Please Enter Name " 
-      {...register('firstName',{required:true, maxLength:20})} 
-       />
+    <form
+      onSubmit={handleSubmit((data) => {
+        if (data) {
+          setState(activeStep + 1);
+          setFormData(formData.concat(data));
+        } else {
+          setState(activeStep);
+        }
+      })}
+    >
+      <h1>Education</h1>
 
+      {/* register your input into the hook by invoking the "register" function */}
+      <input
+        type="text"
+        className=""
+        placeholder="Please Enter Maximum Education "
+        {...register("education", { required: true })}
+      />
+      {errors.education && <span>Education can be empty</span>}
       {/* include validation with required or other standard HTML validation rules */}
-      <input 
-      type="password"
-      {...register("exampleRequired", { required: true })} />
+      <input type="text" {...register("institute", { required: true })} />
       {/* errors will return when field validation fails  */}
-      {errors.firstName && <span>Please write proper first name</span>}
+      {errors.institute && <span>institute can't be empty</span>}
       <input type="submit" />
     </form>
   );

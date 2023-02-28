@@ -1,17 +1,25 @@
 import HorizontalNonLinearStepper from "./Components/MaterialUI/stepper";
 import { AppContext } from "./context";
-import * as React from 'react';
+import * as React from "react";
 export default function App() {
   const [activeStep, setActiveStep] = React.useState(0);
   // const [formValidated, setFormValidated] = React.useState(false);
   const submitRef = React.useRef();
   const [formValidated, setFormValidated] = React.useState(false);
-  function setState(value){
-    setActiveStep(value)
+  const [formData, setFormData] = React.useState([]);
+  function setState(value) {
+    setActiveStep(value);
   }
   return (
     <div>
-      <AppContext.Provider value = {{value1:[activeStep,setState], value2:[formValidated, setFormValidated],submitRef:[submitRef]}}>
+      <AppContext.Provider
+        value={{
+          value1: [activeStep, setState],
+          value2: [formValidated, setFormValidated],
+          value3: [formData, setFormData],
+          submitRef: [submitRef],
+        }}
+      >
         <HorizontalNonLinearStepper />
       </AppContext.Provider>
     </div>
